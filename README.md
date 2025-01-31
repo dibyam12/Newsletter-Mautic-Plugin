@@ -23,30 +23,31 @@
   •	Click on Plugins menu. After this Plugins page will load.
   •	Check newly install plugin is there or not.
 
-#WorkFlow of RssNewsletterBundle Plugin
-1. Command Execution: newsletter:process
-  The command newsletter:process processes newsletters and sends emails to eligible users.
-  Usage:
-    ddev exec bin/console newsletter:process --limit=1000
-  Options:
-    •	--limit: The maximum number of users to process per batch. Default is 1000.
-  Process Flow:
-  1.	Fetch RSS Feed: The system fetches events from the configured RSS feed URL.
-    o	RssHelper->fetchFeed($rssUrl)
-  2.	Get Eligible Users: Fetch users who are eligible for newsletters based on their categories and last sent date.
-    o	UserHelper->getEligibleUsers($limit)
-  3.	Match Events to Categories: The user's categories are matched to the RSS events.
-    o	User's categories are compared with the event categories to determine if they should receive an email.
-  4.	Generate Email Content: For users with matching events, generate personalized email content.
-    o	NewsletterService->generateEmailContent($user, $matchedEvents)
-  5.	Send Email: The email is sent to eligible users with the generated content.
-    o	EmailHelper->sendCustomEmail($user['email'], 'Your Personalized Events', $content)
-  6.	Update User's Last Sent Date: After sending the email, the nf_last_sent_date for each user is updated.
-    o	UserHelper->updateLastSentDate($userId)
-2. API Endpoint: /send
-  The /send endpoint allows triggering the newsletter process programmatically via an HTTP request.
-  URL:
-    {yourURL}/api/send
-  Request Method:
-    GET
+# WorkFlow of RssNewsletterBundle Plugin
+  # 1. Command Execution: newsletter:process
+    The command newsletter:process processes newsletters and sends emails to eligible users.
+    Usage:
+      ddev exec bin/console newsletter:process --limit=1000
+    Options:
+      •	--limit: The maximum number of users to process per batch. Default is 1000.
+    Process Flow:
+    1.	Fetch RSS Feed: The system fetches events from the configured RSS feed URL.
+      o	RssHelper->fetchFeed($rssUrl)
+    2.	Get Eligible Users: Fetch users who are eligible for newsletters based on their categories and last sent date.
+      o	UserHelper->getEligibleUsers($limit)
+    3.	Match Events to Categories: The user's categories are matched to the RSS events.
+      o	User's categories are compared with the event categories to determine if they should receive an email.
+    4.	Generate Email Content: For users with matching events, generate personalized email content.
+      o	NewsletterService->generateEmailContent($user, $matchedEvents)
+    5.	Send Email: The email is sent to eligible users with the generated content.
+      o	EmailHelper->sendCustomEmail($user['email'], 'Your Personalized Events', $content)
+    6.	Update User's Last Sent Date: After sending the email, the nf_last_sent_date for each user is updated.
+      o	UserHelper->updateLastSentDate($userId)
+  
+   # 2. API Endpoint: /send
+    The /send endpoint allows triggering the newsletter process programmatically via an HTTP request.
+    URL:
+      {yourURL}/api/send
+    Request Method:
+      GET
 
